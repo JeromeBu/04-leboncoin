@@ -32,18 +32,16 @@ const seed = {
 		"Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe porro expedita illo possimus repellendus itaque dolorem illum, veritatis omnis reprehenderit ratione a sit, nam earum labore consectetur minus nulla doloremque.",
 	city: "Paris",
 	price: 25,
-	photo: "https://picsum.photos/250"
+	photo: "73285e1f2bb198b4afc9c49b1c425a5f"
 };
 
 ads.push(seed);
-
 console.log(ads);
 
-ads.push(seed);
-
 app.get("/", function(req, res) {
+	console.log("ads :", ads);
 	res.render("home.ejs", {
-		title: "titre"
+		ads
 	});
 });
 
@@ -74,9 +72,9 @@ app.get("/deposer/", function(req, res) {
 	});
 });
 
-app.post("/add_ad/", upload.single("picture"), function(req, res) {
-	console.log("req.body :", req.body);
-	console.log("req.file :", req.file);
+app.post("/add_ad/", upload.single("photo"), function(req, res) {
+	var obj = req.body;
+	obj[photo] = req.file.filename;
 	ads.push(req.body);
 	res.redirect("/annonce/" + req.body.id);
 	console.log("ads :", ads);

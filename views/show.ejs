@@ -1,14 +1,30 @@
 <% include partials/header.ejs %>
 
-<p>Test !</p>
+<div class="flex-container">
+    <div class="main-infos">
+        <div class='show-card'>
+            <div class="img-part">
+                <img src="/uploads/<%= photo %>" alt="">
+            </div>
+            <div class="text-part">
+                <h2><%= title %></h2>
+                <h5><%= price %> €</h5>
+            </div>
+        </div>
+        <div class="undercard">
+            <h4>Description</h4>
+            <p><%= description %></p>
+        </div>
+        
+        <div class="undercard">
+            <h4>Localisation</h4>
+            <p><%= city %></p>
+        </div>
+    </div>
 
-<%- include("partials/form.ejs", {
-    id,
-    title,
-    description,
-    city,
-    price,
-    photo
-}); %>
+    <div class="right-side">
+        <p>Seller infos</p>
+    </div>
+</div>
 
 <% include partials/footer.ejs %>

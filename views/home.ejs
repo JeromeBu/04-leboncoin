@@ -1,8 +1,21 @@
 <% include partials/header.ejs %>
 
 
-    <h1>Hello ! <%= title %></h1>
-
+<% for(var i = 0; i < ads.length; i++) { %>
+    <% let ad = ads[i] %>
+    <% console.log(ad) %>
+    <div class='index-card'>
+        <div class="img-part">
+            <img src="/uploads/<%= ad.photo %>" alt="">
+        </div>
+        <div class="text-part">
+            <h2><%= ad.title %></h2>
+            <p><%= ad.description %></p>
+            <h5><%= ad.price %> €</h5>
+        </div>
+        <a href="/annonce/<%= ad.id %>"></a>
+    </div>
+<% } %>
 
 
 <% include partials/footer.ejs %>
