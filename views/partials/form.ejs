@@ -1,0 +1,26 @@
+<form method="post" action="/add_ad">
+    <div>
+        <input type="hidden" name="id" id="form_id" value="<%= id %>"/>
+    </div>
+    <div>
+        <label for="from_title">Titre :</label>
+        <input type="string" name="title" id="form_title" value="<%= title %>" placeholder="Your first name"/>
+    </div>
+    <div>
+        <label for="from_description">Description :</label>
+        <input type="text" name="description" id='form_description' value="<%= description %>" placeholder="What 's your story ?"/>
+    </div>
+    <div>
+        <label for="from_city">Ville :</label>
+        <input type="string" name="city" id="form_city" value="<%= city %>" placeholder="The city you live in"/>
+    </div>
+    <div>
+        <label for="from_price">Prix :</label>
+        <input type="number" name="price" id="form_price" placeholder="The city you live in"/>
+    </div>
+    <div>
+        <label for="from_photo">Url of photo :</label>
+        <input type="file" name="photo" id="form_photo"/>
+    </div>
+    <button type="submit">Valider</button>
+</form>
