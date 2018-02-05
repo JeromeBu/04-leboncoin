@@ -1,7 +1,14 @@
 <% include partials/header.ejs %>
 
-<p><%= data%></p>
+<p>Test !</p>
 
-<% /*  include("partials/form.ejs", { student: newStudent });*/%>
+<%- include("partials/form.ejs", {
+    id,
+    title,
+    description,
+    city,
+    price,
+    photo
+}); %>
 
 <% include partials/footer.ejs %>

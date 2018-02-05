@@ -1,1 +1,35 @@
+/* @import "reset.css"; */
+body {
+	font-family: "Open Sans", sans-serif;
+}
 
+.container {
+	width: 1024px;
+	margin: 0 auto;
+	padding: 0 15px;
+}
+
+a {
+	text-decoration: none;
+}
+
+header {
+	background-color: #e6723e;
+	color: white;
+}
+
+header a {
+	display: inline-block;
+	padding-right: 20px;
+	color: white;
+	line-height: 60px;
+	font-weight: 700;
+}
+
+header a:hover {
+	text-decoration: underline;
+}
+
+header a img {
+	width: 140px;
+}

@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
+const multer = require("multer");
+const upload = multer({ dest: "public/uploads/" });
+const _ = require("lodash");
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -9,7 +12,7 @@ app.use(
 	morgan(":method :url :status :response-time ms - :res[content-length]")
 );
 
-ads = [];
+const ads = [];
 
 function getNewId() {
 	var i = 0;
@@ -22,7 +25,7 @@ function getNewId() {
 	return (i + 1).toString();
 }
 
-seed = {
+const seed = {
 	id: 1,
 	title: "Tom",
 	description:
@@ -31,6 +34,10 @@ seed = {
 	price: 25,
 	photo: "https://picsum.photos/250"
 };
+
+ads.push(seed);
+
+console.log(ads);
 
 ads.push(seed);
 
@@ -44,9 +51,20 @@ app.get("/offres/", function(req, res) {
 	res.redirect("/");
 });
 
-app.get("annonce/:id", function(req, res) {
+app.get("/annonce/:id", function(req, res) {
+	console.log("type of req.params.id :", typeof req.params.id);
+	const index = _.findIndex(ads, function(ad) {
+		console.log("type of ad.id :", typeof ad.id);
+		return ad.id.toString() === req.params.id;
+	});
+	console.log("index :", index);
 	res.render("show.ejs", {
-		data: "voila de la data pour la show"
+		id: ads[index].id,
+		title: ads[index].title,
+		description: ads[index].description,
+		city: ads[index].city,
+		price: ads[index].price,
+		photo: ads[index].photo
 	});
 });
 
@@ -56,8 +74,12 @@ app.get("/deposer/", function(req, res) {
 	});
 });
 
-app.post("/add_ad/", function(req, res) {
-	redirect("/");
+app.post("/add_ad/", upload.single("picture"), function(req, res) {
+	console.log("req.body :", req.body);
+	console.log("req.file :", req.file);
+	ads.push(req.body);
+	res.redirect("/annonce/" + req.body.id);
+	console.log("ads :", ads);
 });
 
 app.listen(3000, function() {
