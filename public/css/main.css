@@ -46,15 +46,16 @@ header {
       border-right: 1px solid white; }
       header a.connexion:hover {
         background-color: white;
-        color: #f56b2a; }
+        color: #f56b2a;
+        text-decoration: underline; }
 
 form {
   font-size: 13px;
   line-height: 19px;
-  border: 1px solid #5f5f5f;
+  border: 1px solid #7e7e7e;
   width: 100%; }
   form h3 {
-    background-color: #5f5f5f;
+    background-color: #7e7e7e;
     font-weight: bolder;
     color: white;
     padding: 10px; }
@@ -73,7 +74,7 @@ form {
     width: 100%;
     height: 30px;
     border-radius: 10px;
-    border: 1px solid #5f5f5f;
+    border: 1px solid #7e7e7e;
     padding: 5px 10px;
     resize: none; }
   form textarea {
@@ -101,7 +102,7 @@ h5 {
   display: flex;
   position: relative;
   padding: 15px;
-  border: 1px solid #5f5f5f;
+  border: 1px solid #7e7e7e;
   margin-top: -1px; }
   .index-card .img-part {
     flex: 0 0 200px; }
@@ -111,7 +112,7 @@ h5 {
     flex: 1;
     padding-left: 20px; }
   .index-card a {
-    background-color: #525252;
+    background-color: #202020;
     opacity: 0;
     position: absolute;
     top: 0;
@@ -119,7 +120,7 @@ h5 {
     right: 0;
     left: 0; }
     .index-card a:hover {
-      opacity: 0.1;
+      opacity: 0.05;
       cursor: pointer; }
 
 .flex-container {
@@ -131,8 +132,7 @@ h5 {
   .main-infos .undercard {
     margin-top: 30px;
     padding: 20px 0;
-    border-top: 1px solid #5f5f5f;
-    border-bottom: 1px solid #5f5f5f; }
+    border-top: 1px solid #7e7e7e; }
     .main-infos .undercard h4 {
       padding-bottom: 15px;
       font-size: 16px;
@@ -141,7 +141,7 @@ h5 {
 
 .right-side {
   flex: 1;
-  background-color: aqua;
+  background-color: antiquewhite;
   padding: 25px; }
 
 .show-card {
