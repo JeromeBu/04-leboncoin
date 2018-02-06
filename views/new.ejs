@@ -1,10 +1,12 @@
 <% include partials/header.ejs %>
 
+<form method="post" action="/add_ad" enctype="multipart/form-data">
 <%- include("partials/form.ejs", { 
                                     title: '',
                                     description: '',
                                     price: 0,
-                                    city: ''
+                                    city: '',
+                                    photo: null
 
                                 }); %>
 

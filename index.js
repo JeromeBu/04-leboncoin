@@ -121,6 +121,7 @@ app.get("/modification/:id", function(req, res) {
 		if (!err) {
 			console.log("ad in modif :", ad);
 			res.render("edit.ejs", {
+				id: ad._id,
 				title: ad.title,
 				description: ad.description,
 				city: ad.city,
@@ -138,6 +139,34 @@ app.get("/deposer/", function(req, res) {
 	res.render("new.ejs");
 });
 
+// DELETE:
+app.get("/delete/:id", function(req, res) {
+	SuperAd.findOneAndRemove({ _id: req.params.id }, function(err, ad) {
+		if (!err) {
+			res.redirect("/");
+		}
+	});
+});
+
+// UPDATE:
+app.post("/change_ad/:id", upload.single("photo"), function(req, res) {
+	var obj = req.body;
+	if (req.file) {
+		obj.photo = req.file.filename;
+	}
+	SuperAd.findOneAndUpdate({ _id: req.params.id }, obj, { new: true }, function(
+		err,
+		ad
+	) {
+		if (!err) {
+			console.log("The ad was updated :" + ad);
+			res.redirect("/annonce/" + ad._id);
+		} else {
+			console.log("An error occured: " + err);
+		}
+	});
+});
+
 // CREATE:
 app.post("/add_ad/", upload.single("photo"), function(req, res) {
 	var obj = new SuperAd(req.body);
@@ -149,7 +178,7 @@ app.post("/add_ad/", upload.single("photo"), function(req, res) {
 			res.send("something went wrong when saving");
 		} else {
 			console.log("The ad was saved :" + obj);
-			res.redirect("/annonce/" + req.body.id);
+			res.redirect("/annonce/" + obj._id);
 		}
 	});
 });

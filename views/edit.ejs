@@ -1,5 +1,6 @@
 <% include partials/header.ejs %>
 
+<form method="post" action="/change_ad/<%= id %>" enctype="multipart/form-data">
 <%- include("partials/form.ejs", { 
                                     title: title,
                                     description: description,
