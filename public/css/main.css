@@ -6,14 +6,15 @@ body {
   padding: 10px 15px;
   border-radius: 4px;
   font-weight: bold;
+  opacity: 0.9;
   background: #399ee0;
   transition: background 0.3s ease; }
 
 .btn:hover {
   opacity: 1;
-  background: #54b0ee;
   text-decoration: none;
-  color: white; }
+  color: white;
+  cursor: pointer; }
 
 .container {
   width: 1024px;
@@ -61,6 +62,11 @@ form {
     padding: 10px; }
   form .form-content {
     padding: 10px; }
+    form .form-content img {
+      display: block;
+      max-height: 150px;
+      max-width: 200px;
+      padding: 10px; }
   form button {
     margin: 10px; }
   form .form-input {
@@ -141,17 +147,26 @@ h5 {
 
 .right-side {
   flex: 1;
-  background-color: antiquewhite;
   padding: 25px; }
+  .right-side a {
+    display: block;
+    text-align: center;
+    font-size: 20px;
+    box-shadow: 3px 3px 3px #b4b4b4;
+    width: 100%; }
+  .right-side .red {
+    background-color: #b14d40; }
 
 .show-card {
   box-shadow: 3px 3px 3px #b4b4b4; }
   .show-card .img-part {
     height: 430px;
+    width: 790px;
     background: linear-gradient(0deg, #444444, #ebebeb 40%, #ebebeb); }
     .show-card .img-part img {
       display: block;
       height: 100%;
+      max-width: 100%;
       margin: 0 auto; }
   .show-card .text-part {
     padding: 15px; }

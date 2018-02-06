@@ -1,0 +1,10 @@
+<% include partials/header.ejs %>
+
+<%- include("partials/form.ejs", { 
+                                    title: title,
+                                    description: description,
+                                    price: price,
+                                    city: city
+                                }); %>
+
+<% include partials/footer.ejs %>
