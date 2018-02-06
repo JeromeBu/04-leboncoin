@@ -14,9 +14,12 @@ mongoose.connect("mongodb://localhost:27017/leboncoin");
 const superAdSchema = mongoose.Schema({
 	title: {
 		type: String,
-		required: true
+		required: [true, "Vous devez mettre un titre"]
 	},
-	description: String,
+	description: {
+		type: String,
+		required: [true, "Vous devez mettre une description"]
+	},
 	city: String,
 	price: Number,
 	photo: String
@@ -27,40 +30,6 @@ const SuperAd = mongoose.model("SuperAd", superAdSchema);
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));
-// app.use(
-// 	morgan(function(tokens, req, res) {
-// 		var status = tokens.status(req, res);
-// 		var statusColor =
-// 			status >= 500
-// 				? "red"
-// 				: status >= 400 ? "yellow" : status >= 300 ? "cyan" : "green";
-
-// 		return (
-// 			chalk.reset(
-// 				padRight(tokens.method(req, res) + " " + tokens.url(req, res), 30)
-// 			) +
-// 			" " +
-// 			chalk[statusColor](status) +
-// 			" " +
-// 			chalk.reset(padLeft(tokens["response-time"](req, res) + " ms", 8)) +
-// 			" " +
-// 			chalk.reset("-") +
-// 			" " +
-// 			chalk.reset(tokens.res(req, res, "content-length") || "-")
-// 		);
-// 	})
-// );
-
-// function padLeft(str, len) {
-// 	return len > str.length
-// 		? new Array(len - str.length + 1).join(" ") + str
-// 		: str;
-// }
-// function padRight(str, len) {
-// 	return len > str.length
-// 		? str + new Array(len - str.length + 1).join(" ")
-// 		: str;
-// }
 
 const seed = new SuperAd({
 	title: "Tom",
@@ -87,6 +56,9 @@ app.get("/", function(req, res) {
 			res.render("home.ejs", {
 				ads: ads
 			});
+		} else {
+			console.log("errors :", showErrors(err));
+			res.send("something went wrong when saving: \n" + showErrors(err));
 		}
 	});
 });
@@ -144,6 +116,8 @@ app.get("/delete/:id", function(req, res) {
 	SuperAd.findOneAndRemove({ _id: req.params.id }, function(err, ad) {
 		if (!err) {
 			res.redirect("/");
+		} else {
+			console.log("An error occured: " + err);
 		}
 	});
 });
@@ -170,12 +144,14 @@ app.post("/change_ad/:id", upload.single("photo"), function(req, res) {
 // CREATE:
 app.post("/add_ad/", upload.single("photo"), function(req, res) {
 	var obj = new SuperAd(req.body);
-	obj.photo = req.file.filename;
+	if (req.file) {
+		obj.photo = req.file.filename;
+	}
 
 	obj.save(function(err, obj) {
 		if (err) {
-			console.log("something went wrong when saving");
-			res.send("something went wrong when saving");
+			console.log("errors :", showErrors(err));
+			res.send("Error: \n" + JSON.stringify(showErrors(err)));
 		} else {
 			console.log("The ad was saved :" + obj);
 			res.redirect("/annonce/" + obj._id);
@@ -186,3 +162,8 @@ app.post("/add_ad/", upload.single("photo"), function(req, res) {
 app.listen(3000, function() {
 	console.log("Server started");
 });
+
+function showErrors(err) {
+	var table = Object.keys(err.errors);
+	return table.map(element => ({ [element]: err.errors[element].message }));
+}
