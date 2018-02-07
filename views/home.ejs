@@ -2,10 +2,7 @@
 
 
 <% for(var i = 0; i < ads.length; i++) { %>
-<% let ad = ads[i] %>
-<h1>HELLO ad: <%= ad %></h1>
-<h1>HELLO type ad: <%= Object.keys(ad) %></h1>
-<h1>HELLO title: <%= ad._doc.title %></h1>
+<% let ad = ads[i]%>
     <div class='index-card'>
         <div class="img-part">
             <img src="/uploads/<%= ad.photo %>" alt="photo">
@@ -15,7 +12,7 @@
             <p><%= ad.description %></p>
             <h5><%= ad.price %> €</h5>
         </div>
-        <a href="/annonce/<%= ad.id %>"></a>
+        <a href="/annonce/<%= ad._id %>"></a>
     </div>
 <% } %>
 

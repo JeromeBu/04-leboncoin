@@ -4,19 +4,29 @@
         <div class='form-input'>
             <label for="from_title">Titre :</label>
             <input type="string" name="title" id="form_title" value="<%= title %>" placeholder="Le titre de votre annonce" required/>
-            <p class="error-message">Le titre est obligatoire</p>
+            <p class="error-message"></p>
         </div>
+
+        <label for="typeChoice1">Offre</label>
+        <input type="radio" id="typeChoice1" name="ad_type" value="offer" checked>
+
+        <label for="typeChoice2">Demande</label>
+        <input type="radio" id="typeChoice2" name="ad_type" value="demand">
+
         <div class='form-input'>
             <label for="from_description">Description :</label>
             <textarea type="text" name="description" id='form_description' value="<%= description %>" placeholder="Décrivez ce que vous proposez"><%= description %></textarea>
+            <p class="error-message"></p>
         </div>
         <div class='form-input'>
             <label for="from_city">Ville :</label>
             <input type="string" name="city" id="form_city" value="<%= city %>" placeholder="Votre ville"/>
+            <p class="error-message"></p>
         </div>
         <div class='form-input'>
             <label for="from_price">Prix :</label>
             <input type="number" name="price" value="<%= price %>" id="form_price" placeholder="Votre prix"/>
+            <p class="error-message"></p>
         </div>
         <div class='form-input'>
             <label for="from_photo">Photo :</label>
@@ -24,6 +34,7 @@
                 <img src="/uploads/<%= photo %>" alt="photo">
             <% } %>
             <input type="file"  name="photo" id="form_photo"/>
+            <p class="error-message"></p>
         </div>
     </div>
 </section>

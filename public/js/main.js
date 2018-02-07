@@ -18,30 +18,50 @@ document.addEventListener(
 		var formInputs = document.querySelectorAll(
 			".form-input>input, .form-input>textarea"
 		);
+
 		if (typeof formInputs !== "undefined" && formInputs.length > 0) {
+			var validateBtn = document.querySelector("form .btn[type='submit']");
+			if (validateBtn) {
+				validateBtn.addEventListener(
+					"click",
+					function() {
+						let has_error = false;
+						const body = {};
+						formInputs.forEach(input => {
+							const field = validations[input.name];
+							var that = input;
+							let has_err = checkValidation(field, that);
+							if (!has_error) {
+								has_error = has_err;
+								body[field] = that.value;
+							}
+						});
+
+						console.log("Has error : ", has_error);
+
+						// if (!has_error) {
+						// 	fetch("/add_ad", {
+						// 		method: "post",
+						// 		body: JSON.stringify(body)
+						// 	})
+						// 		.then(response => response.json())
+						// 		.then(data => {
+						// 			console.log(data);
+						// 		});
+						// }
+						if (has_error) {
+							event.preventDefault();
+						}
+					},
+					false
+				);
+			}
+
 			formInputs.forEach(input => {
 				input.addEventListener("blur", function(event) {
 					const field = validations[this.name];
-					if (field) {
-						if (field.required[0]) {
-							if (!this.value) {
-								this.classList.add("not-validated");
-								var error = this.parentElement.querySelector(".error-message");
-								error.innerHTML = field.required[1];
-								error.classList.add("displayed");
-								return;
-							}
-						}
-						if (field.validate) {
-							if (!field.validate.validator(this.value)) {
-								this.classList.add("not-validated");
-								var error = this.parentElement.querySelector(".error-message");
-								error.innerHTML = field.validate.message;
-								error.classList.add("displayed");
-								return;
-							}
-						}
-					}
+					var that = this;
+					checkValidation(field, that);
 				});
 				input.addEventListener("input", function() {
 					if (this.value) {
@@ -55,3 +75,27 @@ document.addEventListener(
 	},
 	false
 );
+
+function checkValidation(field, that) {
+	if (field) {
+		if (field.required && field.required[0]) {
+			if (!that.value) {
+				that.classList.add("not-validated");
+				var error = that.parentElement.querySelector(".error-message");
+				error.innerHTML = field.required[1];
+				error.classList.add("displayed");
+				return true;
+			}
+		}
+		if (field.validate) {
+			if (!field.validate.validator(that.value)) {
+				that.classList.add("not-validated");
+				var error = that.parentElement.querySelector(".error-message");
+				error.innerHTML = field.validate.message;
+				error.classList.add("displayed");
+				return true;
+			}
+		}
+	}
+	return false;
+}

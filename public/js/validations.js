@@ -13,6 +13,7 @@ const validations = {
 		type: String,
 		enum: {
 			values: ["offer", "demand"],
+			default: "offer",
 			message: "Choose a type of annonce."
 		}
 	},
@@ -44,5 +45,5 @@ const validations = {
 };
 
 try {
-	module.exports = { validations };
+	module.exports = validations;
 } catch (error) {}
