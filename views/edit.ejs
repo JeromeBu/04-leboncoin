@@ -1,11 +1,20 @@
 <% include partials/header.ejs %>
 
 <form method="post" action="/change_ad/<%= id %>" enctype="multipart/form-data">
-<%- include("partials/form.ejs", { 
-                                    title: title,
-                                    description: description,
-                                    price: price,
-                                    city: city
-                                }); %>
+    <%- include("partials/form.ejs", { 
+        title,
+        description,
+        price,
+        city,
+        validations
+    }); %>
+    <%- include("partials/userForm.ejs", { 
+        pseudo: '',
+        mail: '',
+        phone: '',
+        validations
+    }); %>
+    <button type="submit" class='btn'>Valider</button>
+</form>
 
 <% include partials/footer.ejs %>

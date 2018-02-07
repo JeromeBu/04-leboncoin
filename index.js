@@ -6,24 +6,13 @@ const multer = require("multer");
 const upload = multer({ dest: "public/uploads/" });
 const _ = require("lodash");
 const chalk = require("chalk");
+const validations = require("./public/js/validations.js");
 
 const mongoose = require("mongoose");
 
 mongoose.connect("mongodb://localhost:27017/leboncoin");
 
-const superAdSchema = mongoose.Schema({
-	title: {
-		type: String,
-		required: [true, "Vous devez mettre un titre"]
-	},
-	description: {
-		type: String,
-		required: [true, "Vous devez mettre une description"]
-	},
-	city: String,
-	price: Number,
-	photo: String
-});
+const superAdSchema = mongoose.Schema(validations);
 
 const SuperAd = mongoose.model("SuperAd", superAdSchema);
 
@@ -48,6 +37,11 @@ const seed = new SuperAd({
 // 	}
 // });
 
+// redirection to home : index
+app.get("/offres/", function(req, res) {
+	res.redirect("/");
+});
+
 // INDEX
 app.get("/", function(req, res) {
 	SuperAd.find({}, function(err, ads) {
@@ -57,15 +51,12 @@ app.get("/", function(req, res) {
 				ads: ads
 			});
 		} else {
+			console.log("Full errors: ");
+			console.log(err.errors);
 			console.log("errors :", showErrors(err));
 			res.send("something went wrong when saving: \n" + showErrors(err));
 		}
 	});
-});
-
-// redirection to home : index
-app.get("/offres/", function(req, res) {
-	res.redirect("/");
 });
 
 // SHOW
@@ -87,6 +78,31 @@ app.get("/annonce/:id", function(req, res) {
 	});
 });
 
+// NEW:
+app.get("/deposer/", function(req, res) {
+	res.render("new.ejs", { validations });
+});
+
+// CREATE:
+app.post("/add_ad/", upload.single("photo"), function(req, res) {
+	var obj = new SuperAd(req.body);
+	if (req.file) {
+		obj.photo = req.file.filename;
+	}
+
+	obj.save(function(err, obj) {
+		if (err) {
+			console.log("Full errors: ");
+			console.log(err.errors);
+			console.log("errors :", showErrors(err));
+			res.send("Error: \n" + JSON.stringify(showErrors(err)));
+		} else {
+			console.log("The ad was saved :" + obj);
+			res.redirect("/annonce/" + obj._id);
+		}
+	});
+});
+
 // EDIT:
 app.get("/modification/:id", function(req, res) {
 	SuperAd.findOne({ _id: req.params.id }, function(err, ad) {
@@ -100,22 +116,6 @@ app.get("/modification/:id", function(req, res) {
 				price: ad.price,
 				photo: ad.photo
 			});
-		} else {
-			console.log("An error occured: " + err);
-		}
-	});
-});
-
-// NEW:
-app.get("/deposer/", function(req, res) {
-	res.render("new.ejs");
-});
-
-// DELETE:
-app.get("/delete/:id", function(req, res) {
-	SuperAd.findOneAndRemove({ _id: req.params.id }, function(err, ad) {
-		if (!err) {
-			res.redirect("/");
 		} else {
 			console.log("An error occured: " + err);
 		}
@@ -141,20 +141,13 @@ app.post("/change_ad/:id", upload.single("photo"), function(req, res) {
 	});
 });
 
-// CREATE:
-app.post("/add_ad/", upload.single("photo"), function(req, res) {
-	var obj = new SuperAd(req.body);
-	if (req.file) {
-		obj.photo = req.file.filename;
-	}
-
-	obj.save(function(err, obj) {
-		if (err) {
-			console.log("errors :", showErrors(err));
-			res.send("Error: \n" + JSON.stringify(showErrors(err)));
+// DELETE:
+app.get("/delete/:id", function(req, res) {
+	SuperAd.findOneAndRemove({ _id: req.params.id }, function(err, ad) {
+		if (!err) {
+			res.redirect("/");
 		} else {
-			console.log("The ad was saved :" + obj);
-			res.redirect("/annonce/" + obj._id);
+			console.log("An error occured: " + err);
 		}
 	});
 });

@@ -1,31 +1,36 @@
+<script>
+    console.log('Validations ci dessous')
+    console.log(validations)
+    
+    // console.log('Validations: ', validations)
+</script>
 
-    <section>
-        <h3>Votre annonce</h3>
-        <div class="form-content">
-            <div class='form-input'>
-                <label for="from_title">Titre :</label>
-                <input type="string" name="title" id="form_title" value="<%= title %>" placeholder="Le titre de votre annonce"/>
-            </div>
-            <div class='form-input'>
-                <label for="from_description">Description :</label>
-                <textarea type="text" name="description" id='form_description' value="<%= description %>" placeholder="Décrivez ce que vous proposez"><%= description %></textarea>
-            </div>
-            <div class='form-input'>
-                <label for="from_city">Ville :</label>
-                <input type="string" name="city" id="form_city" value="<%= city %>" placeholder="Votre ville"/>
-            </div>
-            <div class='form-input'>
-                <label for="from_price">Prix :</label>
-                <input type="number" name="price" value="<%= price %>" id="form_price" placeholder="Votre prix"/>
-            </div>
-            <div class='form-input'>
-                <label for="from_photo">Photo :</label>
-                <% if (photo) { %>
-                    <img src="/uploads/<%= photo %>" alt="photo">
-                <% } %>
-                <input type="file"  name="photo" id="form_photo"/>
-            </div>
+<section>
+    <h3>Votre annonce</h3>
+    <div class="form-content">
+        <div class='form-input'>
+            <label for="from_title">Titre :</label>
+            <input type="string" name="title" id="form_title" value="<%= title %>" placeholder="Le titre de votre annonce" required/>
+            <p class="error-message">Le titre est obligatoire</p>
         </div>
-    </section>
-    <button type="submit" class='btn'>Valider</button>
-</form>
+        <div class='form-input'>
+            <label for="from_description">Description :</label>
+            <textarea type="text" name="description" id='form_description' value="<%= description %>" placeholder="Décrivez ce que vous proposez"><%= description %></textarea>
+        </div>
+        <div class='form-input'>
+            <label for="from_city">Ville :</label>
+            <input type="string" name="city" id="form_city" value="<%= city %>" placeholder="Votre ville"/>
+        </div>
+        <div class='form-input'>
+            <label for="from_price">Prix :</label>
+            <input type="number" name="price" value="<%= price %>" id="form_price" placeholder="Votre prix"/>
+        </div>
+        <div class='form-input'>
+            <label for="from_photo">Photo :</label>
+            <% if (photo) { %>
+                <img src="/uploads/<%= photo %>" alt="photo">
+            <% } %>
+            <input type="file"  name="photo" id="form_photo"/>
+        </div>
+    </div>
+</section>
