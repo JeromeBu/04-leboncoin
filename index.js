@@ -26,6 +26,7 @@ const seed = new SuperAd({
 		"Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe porro expedita illo possimus repellendus itaque dolorem illum, veritatis omnis reprehenderit ratione a sit, nam earum labore consectetur minus nulla doloremque.",
 	city: "Paris",
 	price: 25,
+	ad_type: "offer",
 	photo: "73285e1f2bb198b4afc9c49b1c425a5f"
 });
 
@@ -46,7 +47,6 @@ app.get("/offres/", function(req, res) {
 app.get("/", function(req, res) {
 	SuperAd.find({}, function(err, ads) {
 		if (!err) {
-			console.log("ads :", ads);
 			res.render("home.ejs", {
 				ads: ads
 			});
@@ -70,6 +70,7 @@ app.get("/annonce/:id", function(req, res) {
 				description: ad.description,
 				city: ad.city,
 				price: ad.price,
+				ad_type: ad.ad_type,
 				photo: ad.photo
 			});
 		} else {
@@ -80,7 +81,7 @@ app.get("/annonce/:id", function(req, res) {
 
 // NEW:
 app.get("/deposer/", function(req, res) {
-	res.render("new.ejs", { validations });
+	res.render("new.ejs");
 });
 
 // CREATE:
@@ -114,6 +115,7 @@ app.get("/modification/:id", function(req, res) {
 				description: ad.description,
 				city: ad.city,
 				price: ad.price,
+				ad_type: ad.ad_type,
 				photo: ad.photo
 			});
 		} else {

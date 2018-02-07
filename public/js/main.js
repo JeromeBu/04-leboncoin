@@ -21,12 +21,26 @@ document.addEventListener(
 		if (typeof formInputs !== "undefined" && formInputs.length > 0) {
 			formInputs.forEach(input => {
 				input.addEventListener("blur", function(event) {
-					console.log(this);
-					console.log(this.value);
-					if (!this.value) {
-						this.classList.add("not-validated");
-						var error = this.parentElement.querySelector(".error-message");
-						error.classList.add("displayed");
+					const field = validations[this.name];
+					if (field) {
+						if (field.required[0]) {
+							if (!this.value) {
+								this.classList.add("not-validated");
+								var error = this.parentElement.querySelector(".error-message");
+								error.innerHTML = field.required[1];
+								error.classList.add("displayed");
+								return;
+							}
+						}
+						if (field.validate) {
+							if (!field.validate.validator(this.value)) {
+								this.classList.add("not-validated");
+								var error = this.parentElement.querySelector(".error-message");
+								error.innerHTML = field.validate.message;
+								error.classList.add("displayed");
+								return;
+							}
+						}
 					}
 				});
 				input.addEventListener("input", function() {

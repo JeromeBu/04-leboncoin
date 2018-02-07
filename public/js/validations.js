@@ -9,6 +9,13 @@ const validations = {
 	},
 	city: String,
 	price: Number,
+	ad_type: {
+		type: String,
+		enum: {
+			values: ["offer", "demand"],
+			message: "Choose a type of annonce."
+		}
+	},
 	mail: {
 		type: String,
 		validate: {
