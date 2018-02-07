@@ -137,7 +137,10 @@ app.get("/modification/:id", function(req, res) {
 				city: ad.city,
 				price: ad.price,
 				ad_type: ad.ad_type,
-				photo: ad.photo
+				photo: ad.photo,
+				mail: ad.mail,
+				pseudo: ad.pseudo,
+				phone: ad.phone
 			});
 		} else {
 			console.log("An error occured: " + err);

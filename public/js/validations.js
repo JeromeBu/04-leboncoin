@@ -41,7 +41,8 @@ const validations = {
 		},
 		required: [true, "Le numéro de téléphone est requis"]
 	},
-	photo: String
+	photo: String,
+	pseudo: String
 };
 
 try {
