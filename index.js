@@ -1,20 +1,15 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 const morgan = require("morgan");
 const multer = require("multer");
 const upload = multer({ dest: "public/uploads/" });
 const _ = require("lodash");
 const chalk = require("chalk");
-const validations = require("./public/js/validations.js");
-
-const mongoose = require("mongoose");
+const SuperAd = require("./models/superAd");
 
 mongoose.connect("mongodb://localhost:27017/leboncoin");
-
-const superAdSchema = mongoose.Schema(validations);
-
-const SuperAd = mongoose.model("SuperAd", superAdSchema);
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -92,9 +87,9 @@ app.post("/add_ad/", upload.single("photo"), function(req, res) {
 
 	obj.save(function(err, obj) {
 		// var isAjaxRequest = req.xhr;
-		console.log(err.errors);
 		if (err) {
 			console.log("Errors ..........");
+			console.log(err.errors);
 			// isAjaxRequest
 			// 	? res.json({ status: "401", errors: showErrors(err) })
 			// 	:

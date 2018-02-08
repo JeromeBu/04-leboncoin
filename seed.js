@@ -1,12 +1,9 @@
 const validations = require("./public/js/validations.js");
-
 const mongoose = require("mongoose");
 
 mongoose.connect("mongodb://localhost:27017/leboncoin");
 
-const superAdSchema = mongoose.Schema(validations);
-
-const SuperAd = mongoose.model("SuperAd", superAdSchema);
+const SuperAd = require("./models/superAd");
 
 // const seed = new SuperAd({
 // 	title: "Tom",
