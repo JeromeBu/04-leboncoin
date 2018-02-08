@@ -18,9 +18,17 @@ document.addEventListener(
 		var formInputs = document.querySelectorAll(
 			".form-input>input, .form-input>textarea"
 		);
+		console.log(formInputs);
+		var formContent = document.querySelector(".form-content");
+		if (formContent) {
+			var formData = formContent.attributes["data-form"].value;
+			console.log("formData :", formData);
+			var form_validations = validations[formData];
+		}
 
 		if (typeof formInputs !== "undefined" && formInputs.length > 0) {
 			var validateBtn = document.querySelector("form .btn[type='submit']");
+			console.log(validateBtn);
 			if (validateBtn) {
 				validateBtn.addEventListener(
 					"click",
@@ -28,7 +36,7 @@ document.addEventListener(
 						let has_error = false;
 						const body = {};
 						formInputs.forEach(input => {
-							const field = validations[input.name];
+							const field = form_validations[input.name];
 							var that = input;
 							let has_err = checkValidation(field, that);
 							if (!has_error) {
@@ -59,7 +67,7 @@ document.addEventListener(
 
 			formInputs.forEach(input => {
 				input.addEventListener("blur", function(event) {
-					const field = validations[this.name];
+					const field = form_validations[this.name];
 					var that = this;
 					checkValidation(field, that);
 				});

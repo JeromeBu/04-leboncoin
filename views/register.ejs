@@ -1,0 +1,23 @@
+<% include partials/header.ejs %>
+
+<form method="post" action="/register">
+    <section>
+        <h3>Inscription</h3>
+        <div class="form-content" data-form="user">
+            <% include partials/authForm.ejs %>
+            <div class='form-input'>
+                <label for="from_mail">Email :</label>
+                <input type="email" name="mail" id="form_mail" placeholder="Votre email"/>
+                <p class="error-message"></p>
+            </div>
+            <div class='form-input'>
+                <label for="from_phone">Téléphone :</label>
+                <input type="string" name="phone" id="form_phone" placeholder="Votre téléphone"/>
+                <p class="error-message"></p>
+            </div>
+        </div>
+    </section>
+    <button type="submit" class='btn'>S'inscrire</button>
+</form>
+
+<% include partials/footer.ejs %>

@@ -1,0 +1,13 @@
+<% include partials/header.ejs %>
+
+<form method="post" action="/login">
+    <section>
+        <h3>Connection</h3>
+        <div class="form-content" data-form="user">
+            <% include partials/authForm.ejs %>
+        </div>
+    </section>
+    <button type="submit" class='btn'>Se connecter</button>
+</form>
+
+<% include partials/footer.ejs %>

@@ -1,4 +1,4 @@
-<% include partials/header.ejs %>
+<%- include("partials/header.ejs", {current_user: current_user})%>
 
 <form method="post" action="/change_ad/<%= id %>" enctype="multipart/form-data">
     <%- include("partials/form.ejs", { 

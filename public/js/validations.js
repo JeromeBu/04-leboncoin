@@ -1,4 +1,4 @@
-const validations = {
+const superAd = {
 	title: {
 		type: String,
 		required: [true, "Vous devez mettre un titre"]
@@ -16,6 +16,19 @@ const validations = {
 			default: "offer",
 			message: "Choose a type of annonce."
 		}
+	},
+	photo: String,
+	pseudo: String
+};
+
+const user = {
+	username: {
+		type: String,
+		required: [true, "Le nom d'utilisateur est requis"]
+	},
+	password: {
+		type: String,
+		required: [true, "Le mot de passe est requis"]
 	},
 	mail: {
 		type: String,
@@ -40,10 +53,10 @@ const validations = {
 			message: "Ce n'est pas un téléphone français valide"
 		},
 		required: [true, "Le numéro de téléphone est requis"]
-	},
-	photo: String,
-	pseudo: String
+	}
 };
+
+const validations = { superAd: superAd, user: user };
 
 try {
 	module.exports = validations;

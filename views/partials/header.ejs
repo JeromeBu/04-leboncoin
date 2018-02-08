@@ -22,8 +22,14 @@
             DÉPOSER UNE ANNONCE
         </a>
         <a href="/?ad_type=offer">OFFRES</a>
-        <a href="/?ad_type=demand">DEMANDES</a> 
-        <a href="" class="connexion">Se connecter</a>
+        <a href="/?ad_type=demand">DEMANDES</a>
+        <a href="/secret">Secret</a>
+        <% if (current_user) { %>
+            <a href="/logout" class="connexion">Déconnexion</a>
+        <% } else { %>
+            <a href="/login" class="connexion">Se connecter</a>
+            <a href="/register" class="connexion">Inscription</a>   
+        <% } %>
     </div>
 </header>
     <div class="container">
