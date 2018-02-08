@@ -18,18 +18,21 @@ const superAd = {
 		}
 	},
 	photo: String,
-	pseudo: String
+	pseudo: String,
+	user_id: String
 };
 
 const user = {
-	username: {
-		type: String,
-		required: [true, "Le nom d'utilisateur est requis"]
-	},
-	password: {
-		type: String,
-		required: [true, "Le mot de passe est requis"]
-	},
+	// username: {
+	// 	type: String,
+	// 	required: [true, "Le nom d'utilisateur est requis"]
+	// },
+	// password: {
+	// 	type: String,
+	// 	required: [true, "Le mot de passe est requis"]
+	// },
+	username: String,
+	password: String,
 	mail: {
 		type: String,
 		validate: {

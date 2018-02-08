@@ -94,7 +94,7 @@ app.get("/deposer/", function(req, res) {
 
 // CREATE:
 app.post("/add_ad/", upload.single("photo"), function(req, res) {
-	console.log("\n \n Req body : ", req.body, "\n \n");
+	var current_user = req.isAuthenticated() ? req.user : null;
 	var obj = new SuperAd({
 		title: req.body.title,
 		description: req.body.description,
@@ -104,50 +104,59 @@ app.post("/add_ad/", upload.single("photo"), function(req, res) {
 		photo: req.body.photo,
 		mail: req.body.mail,
 		pseudo: req.body.pseudo,
-		phone: req.body.phone
+		phone: req.body.phone,
+		user_id: current_user._id
 	});
 	if (req.file) {
 		obj.photo = req.file.filename;
 	}
-
-	console.log("\n \n Obj to save : ", obj, "\n \n");
 
 	obj.save(function(err, obj) {
 		// var isAjaxRequest = req.xhr;
 		if (err) {
 			res.json({ status: "401", errors: showErrors(err) });
 		} else {
-			console.log("The ad was saved :" + obj);
+			console.log("The ad was saved");
 			res.redirect("/annonce/" + obj._id);
 		}
 	});
 });
 
 // EDIT:
-
 app.get("/modification/:id", function(req, res) {
-	const current_user = req.isAuthenticated() ? req.user : null;
-	SuperAd.findOne({ _id: req.params.id }, function(err, ad) {
-		if (!err) {
-			console.log("ad in modif :", ad);
-			const obj = {
-				id: ad._id,
-				title: ad.title,
-				description: ad.description,
-				city: ad.city,
-				price: ad.price,
-				ad_type: ad.ad_type,
-				photo: ad.photo,
-				mail: ad.mail,
-				pseudo: ad.pseudo,
-				phone: ad.phone,
-				current_user: current_user
-			};
-			res.render("edit.ejs", obj);
-		} else {
-			console.log("An error occured: " + err);
-		}
-	});
+	var current_user = req.user || null;
+	if (current_user) {
+		SuperAd.findOne({ _id: req.params.id }, function(err, ad) {
+			if (!err) {
+				if (ad.user_id == current_user._id.toString()) {
+					console.log("ad in modif :", ad);
+					const obj = {
+						id: ad._id,
+						title: ad.title,
+						description: ad.description,
+						city: ad.city,
+						price: ad.price,
+						ad_type: ad.ad_type,
+						photo: ad.photo,
+						mail: ad.mail,
+						pseudo: ad.pseudo,
+						phone: ad.phone,
+						current_user: current_user
+					};
+					res.render("edit.ejs", obj);
+				} else {
+					res.json({
+						status: 401,
+						error: "you are not authorized to change this page"
+					});
+				}
+			} else {
+				console.log("An error occured: " + err);
+			}
+		});
+	} else {
+		res.redirect("/login");
+	}
 });
 
 // UPDATE:
@@ -180,8 +189,19 @@ app.get("/delete/:id", function(req, res) {
 	});
 });
 
-// SECRET:
+// MON COMPTE:
+// app.get("/moncompte/:id", function(req, res) {
+// 	current_user;
+// 	SuperAd.find({ _id: req.params.id }, function(err, ad) {
+// 		if (!err) {
+// 			res.redirect("/");
+// 		} else {
+// 			console.log("An error occured: " + err);
+// 		}
+// 	});
+// });
 
+// SECRET:
 app.get("/secret", function(req, res) {
 	console.log("\n \n  req :", req.isAuthenticated());
 	if (req.isAuthenticated()) {
@@ -219,7 +239,7 @@ app.post("/register", function(req, res) {
 				return res.render("register", { current_user: req.user || null });
 			} else {
 				passport.authenticate("local")(req, res, function() {
-					res.redirect("/secret", { current_user: req.user || null });
+					res.redirect("/secret");
 				});
 			}
 		}
