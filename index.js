@@ -11,7 +11,7 @@ const validations = require("./public/js/validations.js");
 const mongoose = require("mongoose");
 
 mongoose.connect("mongodb://localhost:27017/leboncoin");
-console.log("Validations :", validations);
+
 const superAdSchema = mongoose.Schema(validations);
 
 const SuperAd = mongoose.model("SuperAd", superAdSchema);
@@ -20,24 +20,6 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
-const seed = new SuperAd({
-	title: "Tom",
-	description:
-		"Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe porro expedita illo possimus repellendus itaque dolorem illum, veritatis omnis reprehenderit ratione a sit, nam earum labore consectetur minus nulla doloremque.",
-	city: "Paris",
-	price: 25,
-	ad_type: "offer",
-	photo: "73285e1f2bb198b4afc9c49b1c425a5f"
-});
-
-// seed.save(function(err, obj) {
-// 	if (err) {
-// 		console.log("something went wrong when saving");
-// 	} else {
-// 		console.log("The ad was saved :" + obj);
-// 	}
-// });
-
 // redirection to home : index
 app.get("/offres/", function(req, res) {
 	res.redirect("/");
@@ -45,15 +27,18 @@ app.get("/offres/", function(req, res) {
 
 // INDEX
 app.get("/", function(req, res) {
-	SuperAd.find({}, function(err, ads) {
+	var query = {};
+	if (req.query.ad_type) {
+		query.ad_type = req.query.ad_type;
+	}
+	console.log("Query in query :", req.query.ad_type);
+	console.log("Query :", query);
+	SuperAd.find(query, function(err, ads) {
 		if (!err) {
 			res.render("home.ejs", {
 				ads: ads
 			});
 		} else {
-			console.log("Full errors: ");
-			console.log(err.errors);
-			console.log("errors :", showErrors(err));
 			res.send("something went wrong when saving: \n" + showErrors(err));
 		}
 	});
