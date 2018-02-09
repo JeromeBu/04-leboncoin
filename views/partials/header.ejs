@@ -23,8 +23,8 @@
         </a>
         <a href="/?ad_type=offer">OFFRES</a>
         <a href="/?ad_type=demand">DEMANDES</a>
-        <a href="/secret">Secret</a>
         <% if (current_user) { %>
+            <a href="/moncompte" class="connexion">Mon compte</a>
             <a href="/logout" class="connexion">Déconnexion</a>
         <% } else { %>
             <a href="/login" class="connexion">Se connecter</a>

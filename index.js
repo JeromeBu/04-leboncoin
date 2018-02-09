@@ -190,32 +190,32 @@ app.get("/delete/:id", function(req, res) {
 });
 
 // MON COMPTE:
-// app.get("/moncompte/:id", function(req, res) {
-// 	current_user;
-// 	SuperAd.find({ _id: req.params.id }, function(err, ad) {
-// 		if (!err) {
-// 			res.redirect("/");
-// 		} else {
-// 			console.log("An error occured: " + err);
-// 		}
-// 	});
-// });
+app.get("/moncompte/", function(req, res) {
+	var current_user = req.isAuthenticated() ? req.user : null;
+	if (current_user) {
+		var query = {
+			user_id: current_user._id.toString()
+		};
 
-// SECRET:
-app.get("/secret", function(req, res) {
-	console.log("\n \n  req :", req.isAuthenticated());
-	if (req.isAuthenticated()) {
-		console.log(req.user);
-		res.render("secret", { current_user: req.user || null });
+		SuperAd.find(query, function(err, ads) {
+			if (!err) {
+				res.render("moncompte", {
+					ads: ads,
+					current_user: current_user
+				});
+			} else {
+				res.send("something went wrong :" + showErrors(err));
+			}
+		});
 	} else {
-		res.redirect("/register");
+		res.redirect("/login");
 	}
 });
 
 // REGISTER:
 app.get("/register", function(req, res) {
 	if (req.isAuthenticated()) {
-		res.redirect("/secret");
+		res.redirect("/moncompte");
 	} else {
 		res.render("register", { current_user: req.user || null });
 	}
@@ -239,7 +239,7 @@ app.post("/register", function(req, res) {
 				return res.render("register", { current_user: req.user || null });
 			} else {
 				passport.authenticate("local")(req, res, function() {
-					res.redirect("/secret");
+					res.redirect("/moncompte");
 				});
 			}
 		}
@@ -249,7 +249,7 @@ app.post("/register", function(req, res) {
 // LOGIN:
 app.get("/login", function(req, res) {
 	if (req.isAuthenticated()) {
-		res.redirect("/secret");
+		res.redirect("/moncompte");
 	} else {
 		res.render("login", { current_user: req.user || null });
 	}
@@ -258,7 +258,7 @@ app.get("/login", function(req, res) {
 app.post(
 	"/login",
 	passport.authenticate("local", {
-		successRedirect: "/secret",
+		successRedirect: "/moncompte",
 		failureRedirect: "/login"
 	})
 );
@@ -275,4 +275,14 @@ app.listen(3000, function() {
 function showErrors(err) {
 	var table = Object.keys(err.errors);
 	return table.map(element => ({ [element]: err.errors[element].message }));
+}
+
+function log(string, value) {
+	if (typeof value === "object") {
+		var display = JSON.stringify(value);
+	} else {
+		var display = value;
+	}
+
+	console.log(chalk.yellow(`\n \n ${string} : \n ${display} \n`));
 }
