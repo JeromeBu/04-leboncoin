@@ -2,7 +2,9 @@ const validations = require("./public/js/validations.js");
 const mongoose = require("mongoose");
 const Faker = require("faker");
 
-mongoose.connect("mongodb://localhost:27017/leboncoin");
+mongoose.connect(
+	process.env.MONGODB_URI || "mongodb://localhost:27017/leboncoin"
+);
 
 const SuperAd = require("./models/superAd");
 
