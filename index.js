@@ -51,19 +51,36 @@ app.get("/offres/", function(req, res) {
 // INDEX
 app.get("/", function(req, res) {
 	var query = {};
+	var page = 1;
+	log("page num begining", page);
 	if (req.query.ad_type) {
 		query.ad_type = req.query.ad_type;
 	}
 
-	SuperAd.find(query, function(err, ads) {
-		if (!err) {
-			res.render("home.ejs", {
-				ads: ads,
-				current_user: req.user || null
-			});
-		} else {
-			res.send("something went wrong when saving: \n" + showErrors(err));
-		}
+	if (!isNaN(parseInt(req.query.page))) {
+		page = req.query.page;
+	}
+	var nbPerPage = 5;
+
+	log("page num", page);
+	SuperAd.find(query).count(function(err, count) {
+		log("count", count);
+		log("number of pages: ", count / nbPerPage);
+		SuperAd.find(query, function(err, ads) {
+			if (!err) {
+				res.render("home.ejs", {
+					ads: ads,
+					ad_type: query.ad_type,
+					page: page,
+					total_pages: Math.ceil(count / nbPerPage),
+					current_user: req.user || null
+				});
+			} else {
+				res.send("something went wrong when saving: \n" + showErrors(err));
+			}
+		})
+			.limit(nbPerPage)
+			.skip(nbPerPage * (page - 1));
 	});
 });
 
@@ -71,7 +88,6 @@ app.get("/", function(req, res) {
 app.get("/annonce/:id", function(req, res) {
 	SuperAd.findOne({ _id: req.params.id }, function(err, ad) {
 		if (!err) {
-			console.log("ad :", ad);
 			var obj = ad;
 			res.render("show.ejs", {
 				id: obj._id,
@@ -84,7 +100,7 @@ app.get("/annonce/:id", function(req, res) {
 				current_user: req.user || null
 			});
 		} else {
-			console.log("An error occured: " + err);
+			res.send("An error occured: " + err);
 		}
 	});
 });
@@ -131,7 +147,6 @@ app.get("/modification/:id", function(req, res) {
 		SuperAd.findOne({ _id: req.params.id }, function(err, ad) {
 			if (!err) {
 				if (ad.user_id == current_user._id.toString()) {
-					console.log("ad in modif :", ad);
 					const obj = {
 						id: ad._id,
 						title: ad.title,
@@ -153,7 +168,7 @@ app.get("/modification/:id", function(req, res) {
 					});
 				}
 			} else {
-				console.log("An error occured: " + err);
+				res.send("An error occured: " + err.errors);
 			}
 		});
 	} else {
@@ -175,7 +190,7 @@ app.post("/change_ad/:id", upload.single("photo"), function(req, res) {
 			console.log("The ad was updated :" + ad);
 			res.redirect("/annonce/" + ad._id);
 		} else {
-			console.log("An error occured: " + err);
+			res.send("An error occured: " + err.errors);
 		}
 	});
 });
@@ -186,7 +201,7 @@ app.get("/delete/:id", function(req, res) {
 		if (!err) {
 			res.redirect("/");
 		} else {
-			console.log("An error occured: " + err);
+			res.send("An error occured: " + err.errors);
 		}
 	});
 });

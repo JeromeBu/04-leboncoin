@@ -90,6 +90,8 @@ form {
     form textarea:focus {
       outline: none; }
   form input[type="radio"] {
+    height: 15px;
+    width: 15px;
     display: inline; }
   form textarea {
     text-align: top;

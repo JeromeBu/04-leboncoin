@@ -14,5 +14,37 @@
         <a href="/annonce/<%= ad._id %>"></a>
     </div>
 <% } %>
+<br>
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item<% if(page == 1) { %><%=' disabled'%><% }%>"><a class="page-link previous" href="/?ad_type=<%= ad_type %>&page=<%= page - 1 %>">Previous</a></li>
+    <% if(page == total_pages && page > 4) { %>
+        <li class="page-item"><a class="page-link" href="/?ad_type=<%= ad_type %>&page=<%= parseInt(page) - 4 %>"><%= parseInt(page) - 4 %></a></li>
+    <% }%>
+    <% if(page >= total_pages - 1 && page > 3) { %>
+        <li class="page-item"><a class="page-link" href="/?ad_type=<%= ad_type %>&page=<%= parseInt(page) - 3 %>"><%= parseInt(page) - 3 %></a></li>
+    <% }%>
+    <% if(page > 2) { %>
+        <li class="page-item"><a class="page-link" href="/?ad_type=<%= ad_type %>&page=<%= page - 2 %>"><%= page - 2 %></a></li>
+    <% }%>
+    <% if(page != 1) { %>
+        <li class="page-item"><a class="page-link" href="/?ad_type=<%= ad_type %>&page=<%= page - 1 %>"><%= page - 1 %></a></li>
+    <% }%>
+    <li class="page-item active"><a class="page-link" href="/?ad_type=<%= ad_type %>&page=<%= page%>"><%= page %></a></li>
+    <% if(page != total_pages && total_pages > 1) { %>
+        <li class="page-item"><a class="page-link" href="/?ad_type=<%= ad_type %>&page=<%= parseInt(page) + 1 %>"><%= parseInt(page) + 1 %></a></li>
+    <% }%>
+    <% if(page < total_pages - 1 && total_pages > 2) { %>
+        <li class="page-item"><a class="page-link" href="/?ad_type=<%= ad_type %>&page=<%= parseInt(page) + 2 %>"><%= parseInt(page) + 2 %></a></li>
+    <% }%>
+    <% if(page == 1 && total_pages > 3) { %>
+        <li class="page-item"><a class="page-link" href="/?ad_type=<%= ad_type %>&page=<%= parseInt(page) + 3 %>"><%= parseInt(page) + 3 %></a></li>
+    <% }%>
+    <% if(page <= 2 && total_pages > 4) { %>
+        <li class="page-item"><a class="page-link" href="/?ad_type=<%= ad_type %>&page=<%= parseInt(page) + 4 %>"><%= parseInt(page) + 4 %></a></li>
+    <% }%>
+    <li class="page-item <% if(page == total_pages) { %><%=' disabled'%><% }%>"><a class="page-link next" href="/?ad_type=<%= ad_type %>&page=<%= parseInt(page) + 1 %>">Next</a></li>
+  </ul>
+</nav>
 
 <% include partials/footer.ejs %>

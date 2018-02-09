@@ -23,16 +23,16 @@ const superAd = {
 };
 
 const user = {
-	// username: {
-	// 	type: String,
-	// 	required: [true, "Le nom d'utilisateur est requis"]
-	// },
-	// password: {
-	// 	type: String,
-	// 	required: [true, "Le mot de passe est requis"]
-	// },
-	username: String,
-	password: String,
+	username: {
+		type: String,
+		required: [true, "Le nom d'utilisateur est requis"]
+	},
+	password: {
+		type: String,
+		required: [true, "Le mot de passe est requis"]
+	},
+	// username: String,
+	// password: String,
 	mail: {
 		type: String,
 		validate: {
