@@ -112,32 +112,44 @@ app.get("/deposer/", function(req, res) {
 
 // CREATE:
 app.post("/add_ad/", upload.single("photo"), function(req, res) {
-	var current_user = req.isAuthenticated() ? req.user : null;
-	var obj = new SuperAd({
-		title: req.body.title,
-		description: req.body.description,
-		city: req.body.city,
-		price: req.body.price,
-		ad_type: req.body.ad_type,
-		photo: req.body.photo,
-		mail: req.body.mail,
-		pseudo: req.body.pseudo,
-		phone: req.body.phone,
-		user_id: current_user._id
-	});
-	if (req.file) {
-		obj.photo = req.file.filename;
+	log("file", req.file);
+	log("file", req.files);
+	var isAjaxRequest = req.xhr;
+	if (isAjaxRequest) {
+		console.log("THIS WAS AN AJAX REQUEST");
+		log("file", req.file);
+		log("file", req.files);
 	}
-
-	obj.save(function(err, obj) {
-		// var isAjaxRequest = req.xhr;
-		if (err) {
-			res.json({ status: "401", errors: showErrors(err) });
-		} else {
-			console.log("The ad was saved");
-			res.redirect("/annonce/" + obj._id);
+	var current_user = req.isAuthenticated() ? req.user : null;
+	if (current_user) {
+		var obj = new SuperAd({
+			title: req.body.title,
+			description: req.body.description,
+			city: req.body.city,
+			price: req.body.price,
+			ad_type: req.body.ad_type,
+			photo: req.body.photo,
+			mail: req.body.mail,
+			pseudo: req.body.pseudo,
+			phone: req.body.phone,
+			user_id: current_user._id
+		});
+		if (req.file) {
+			obj.photo = req.file.filename;
 		}
-	});
+
+		obj.save(function(err, obj) {
+			// var isAjaxRequest = req.xhr;
+			if (err) {
+				res.json({ status: "401", errors: showErrors(err) });
+			} else {
+				console.log("The ad was saved");
+				res.redirect("/annonce/" + obj._id);
+			}
+		});
+	} else {
+		res.redirect("/login");
+	}
 });
 
 // EDIT:
@@ -178,6 +190,7 @@ app.get("/modification/:id", function(req, res) {
 
 // UPDATE:
 app.post("/change_ad/:id", upload.single("photo"), function(req, res) {
+	log("req.file", req.file);
 	var obj = req.body;
 	if (req.file) {
 		obj.photo = req.file.filename;

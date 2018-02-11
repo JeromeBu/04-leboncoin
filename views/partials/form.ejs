@@ -28,6 +28,11 @@
             <input type="number" name="price" value="<%= price %>" id="form_price" placeholder="Votre prix"/>
             <p class="error-message"></p>
         </div>
+        <div id="theDZ" class="dropzone"></div>
+        <script>
+            Dropzone.autoDiscover = false;
+            var myDropzone = new Dropzone("#theDZ", { url: "/add_ad", paramName: "photo"});
+        </script>
         <div class='form-input'>
             <label for="from_photo">Photo :</label>
             <% if (photo) { %>
