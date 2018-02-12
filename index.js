@@ -113,7 +113,7 @@ app.get("/deposer/", function(req, res) {
 // CREATE:
 app.post("/add_ad/", upload.single("photo"), function(req, res) {
 	log("file", req.file);
-	log("file", req.files);
+	log("files", req.files);
 	var isAjaxRequest = req.xhr;
 	if (isAjaxRequest) {
 		console.log("THIS WAS AN AJAX REQUEST");
